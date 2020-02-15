@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, useFormik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
+import Camera from 'react-html5-camera-photo';
+import 'react-html5-camera-photo/build/css/index.css';
 
 import * as Yup from 'yup';
 
@@ -14,6 +16,11 @@ const customInputForm = ({field, form: {touched, errors}, ...props}) => (
   </div>
 );
 
+function handleTakePhoto (dataUri) {
+  // Do stuff with the photo...
+  console.log(dataUri);
+}
+
 const SignUpPage = () => {
 
   var validationSchema =  Yup.object({
@@ -25,6 +32,8 @@ const SignUpPage = () => {
       .required('Required'),
     email: Yup.string()
       .email('Invalid email address')
+      .required('Required'),
+    password: Yup.string()
       .required('Required'),
   })
   return (
@@ -39,7 +48,7 @@ const SignUpPage = () => {
                     // same shape as initial values
                     console.log(values);
                 }}>
-              <div className="d-flex">
+              <div className="d-flex flex-column">
                 <img src="../../aidnlogo.png" className="img-thumbnail w-25 text-center m-auto"></img>
                 <Form className="w-50 mx-auto mt-5">
                     <FormGroup>
@@ -54,15 +63,16 @@ const SignUpPage = () => {
                         <Label for="exampleEmail">email</Label>
                         <Field name="email" type={'email'} component={customInputForm}/>
                     </FormGroup>
-                    {/*<FormGroup>
-                        <Label for="address">Address</Label>
-                        <Field name="address" type={'text'} component={customInputForm}/>
-                    </FormGroup>*/}
                     <FormGroup>
                         <Label for="examplePassword">password</Label>
                         <Field name="password" type={'password'} component={customInputForm}/>
                     </FormGroup>
-                    <Button color="info" >Submit</Button>
+                    {/*<Camera onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } } style={{width: '500px', margin: 'auto'}} />
+*/}
+                    <Button color="info" >sign up</Button>
+
+                    <Button color="link" href="/login/">log in instead!</Button>
+
                 </Form>
               </div>
             </Formik>

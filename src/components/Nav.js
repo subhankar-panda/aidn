@@ -27,10 +27,10 @@ const TopNav = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/components/">something</NavLink>
+              <NavLink href="/signup/">sign up</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="www.google.com">some other thing</NavLink>
+              <NavLink href="/login/">log in</NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
