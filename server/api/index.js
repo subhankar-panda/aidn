@@ -4,7 +4,9 @@ const request = require('request');
 const fs = require('fs');
 let admin = require("firebase-admin");
 let crypto = require('crypto');
-let serviceAccount = require(".credentials.json");
+let serviceAccount = require("../../.credentials.json");
+const multer = require("multer");
+const path = require('path');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,12 +23,12 @@ let env_vars = JSON.parse(rawdata);
 const subscriptionKey = env_vars.apikey_face;
 const uriBase = env_vars.endpoint_face;
 
-let db = admin.firestore();
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: env_vars.database_url
 });
+
+let db = admin.firestore();
 
 var genRandomString = function(length){
     return crypto.randomBytes(Math.ceil(length/2))
@@ -98,16 +100,12 @@ var sha512 = function(password, salt){
 
 router.get('/', (req, res) => console.log('this is the /api/ handler'))
 
-<<<<<<< HEAD
 router.post('/signup', upload.single('pic'), (req, res) => {
-    console.log(req.body)
-    console.log(req.file, req.files)
-=======
-router.post('/signup', (req, res) => {
+    req.body = JSON.parse(req.body.body)
     let options = {
-        uri: uriBase+"face/v1.0/face/v1.0/persongroups/treehacks/persons",
+        uri: uriBase+"face/v1.0/persongroups/treehacks/persons",
         body: JSON.stringify({
-            "name":req.body.name
+            "name":req.body.firstName+req.body.lastName
         }),
         headers: {
             'Content-Type': 'application/json',
@@ -120,23 +118,22 @@ router.post('/signup', (req, res) => {
             console.log('Error: ', error);
             return;
         }
-        let res = JSON.parse(body);
-        personId = res.personId;
+        let getId = JSON.parse(body);
+        personId = getId.personId;
 
         var salt = genRandomString(16); /** Gives us salt of length 16 */
         var hash = sha512(req.body.password, salt);
 
-        ref = admin.storage().ref();
-        var meta = { contentData: "image/jpeg" };
-        const task = ref.child(name).put(req.body.pic, meta);
-        task.then(snapshot => snapshot.ref.getDownloadURL())
-            .then(function(url) { 
-            //store all the user data to firestore:
+        ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
+        ref.upload(req.file.path).then((ree) => {
+            console.log("REEEE")
+            console.log(ree[0])
+            url = "https://storage.cloud.google.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
             let userref = db.collection('users').doc(personId);
             userref.get().then(doc => {
                 if (!doc.exists) {
                     var data = {
-                        name: req.body.name,
+                        name: req.body.firstName+req.body.lastName,
                         email: req.body.email,
                         salt: salt,
                         hash: hash,
@@ -150,7 +147,7 @@ router.post('/signup', (req, res) => {
 
                         // create personGroup person
                         let opts = {
-                            uri: uriBase+"face/v1.0/face/v1.0/persongroups/treehacks/persons/persistedFaces",
+                            uri: uriBase+"face/v1.0/persongroups/treehacks/persons/persistedFaces",
                             body: JSON.stringify({
                                 "url":url
                             }),
@@ -159,21 +156,66 @@ router.post('/signup', (req, res) => {
                                 'Ocp-Apim-Subscription-Key' : subscriptionKey
                             }
                         };
-                        request.post(options, (error, response, body) => {
+                        request.post(opts, (error, response, body) => {
                             if (error) {
                                 console.log('Error: ', error);
                                 return;
                             }
-                            res.sendStatus(200);
+                            res.status(200);
                         });
                     });
                 } else {
-                    res.sendStatus(500);
+                    res.status(500);
                 }
             });
         });
     });
->>>>>>> d2214510529c62cead886832d303d1dde9c896a9
+    //     var meta = { contentData: "image/jpeg" };
+    //     const task = ref.child(name).put(req.file, meta);
+    //     task.then(snapshot => snapshot.ref.getDownloadURL())
+    //         .then(function(url) { 
+    //         //store all the user data to firestore:
+    //         let userref = db.collection('users').doc(personId);
+    //         userref.get().then(doc => {
+    //             if (!doc.exists) {
+    //                 var data = {
+    //                     name: req.body.name,
+    //                     email: req.body.email,
+    //                     salt: salt,
+    //                     hash: hash,
+    //                     picUrl: url, 
+    //                     personGroupId: "treehacks",
+    //                     personId: personId,
+    //                     role: "user"
+    //                 }
+    //                 db.collection('users').doc(personId).set(data).then(ref => {
+    //                     console.log('Added document with pid: ', personId);
+
+    //                     // create personGroup person
+    //                     let opts = {
+    //                         uri: uriBase+"face/v1.0/face/v1.0/persongroups/treehacks/persons/persistedFaces",
+    //                         body: JSON.stringify({
+    //                             "url":url
+    //                         }),
+    //                         headers: {
+    //                             'Content-Type': 'application/json',
+    //                             'Ocp-Apim-Subscription-Key' : subscriptionKey
+    //                         }
+    //                     };
+    //                     request.post(options, (error, response, body) => {
+    //                         if (error) {
+    //                             console.log('Error: ', error);
+    //                             return;
+    //                         }
+    //                         res.sendStatus(200);
+    //                     });
+    //                 });
+    //             } else {
+    //                 res.sendStatus(500);
+    //             }
+    //         });
+    //     });
+    // });
 });
 
 router.post('/detectFaces', (req, res) => {
