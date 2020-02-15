@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, useFormik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
+import FileUpload from './FileUpload.js';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
@@ -16,10 +17,8 @@ const customInputForm = ({field, form: {touched, errors}, ...props}) => (
   </div>
 );
 
-function handleTakePhoto (dataUri) {
-  // Do stuff with the photo...
-  console.log(dataUri);
-}
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
 
 const SignUpPage = () => {
 
@@ -35,6 +34,9 @@ const SignUpPage = () => {
       .required('Required'),
     password: Yup.string()
       .required('Required'),
+    contactEmail: Yup.string()
+      .email('Invalid email address'),
+    phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   })
   return (
     <Formik
@@ -48,9 +50,10 @@ const SignUpPage = () => {
                     // same shape as initial values
                     console.log(values);
                 }}>
-              <div className="d-flex flex-column">
-                <img src="../../aidnlogo.png" className="img-thumbnail w-25 text-center m-auto"></img>
+              <div className="d-flex">
+                <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img> 
                 <Form className="w-50 mx-auto mt-5">
+                    <h2>your information:</h2>
                     <FormGroup>
                         <Label for="firstName">first name</Label>
                         <Field name="firstName" type={'text'} component={customInputForm}/>
@@ -60,16 +63,43 @@ const SignUpPage = () => {
                         <Field name="lastName" type={'text'} component={customInputForm}/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="exampleEmail">email</Label>
+                        <Label for="email">email</Label>
                         <Field name="email" type={'email'} component={customInputForm}/>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="examplePassword">password</Label>
+                        <Label for="password">password</Label>
                         <Field name="password" type={'password'} component={customInputForm}/>
                     </FormGroup>
+                    <FormGroup>
+                      <Label for="profilePhoto">upload profile photo</Label>
+                      <Field
+                        style={{margin: 'auto'}}
+                        name="image"
+                        component={FileUpload}
+                      />
+                    </FormGroup>
+                    <h2>emergency contact information:</h2>
+                    <h8>this person will be contacted in the event of an emergency</h8>
+                    <FormGroup>
+                      <Label for="contact1">first name</Label>
+                      <Field name="firstName" type="firstName" component={customInputForm}/>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="contact1">last name</Label>
+                      <Field name="lastName" type="lastName" component={customInputForm}/>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="contact1">phone number</Label>
+                      <Field name="phoneNumber" type="phoneNumber" component={customInputForm}/>
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="contact1">email</Label>
+                      <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
+                    </FormGroup>
+
                     {/*<Camera onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } } style={{width: '500px', margin: 'auto'}} />
 */}
-                    <Button color="info" >sign up</Button>
+                    <Button color="info">sign up</Button>
 
                     <Button color="link" href="/login/">log in instead!</Button>
 

@@ -50,7 +50,7 @@ const TopNav = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          <NavbarText>brought to you by team panda</NavbarText>
         </Collapse>
       </Navbar>
     </div>
