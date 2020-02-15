@@ -6,6 +6,7 @@ import DoctorsPage from './pages/DoctorsPage';
 import EntryPage from './pages/EntryPage';
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
+import AssistantPage from './pages/AssistantPage';
 
 class Routes extends React.Component {
 
@@ -33,6 +34,9 @@ class Routes extends React.Component {
         </Route>
         <Route path="/login" exact={true}>
           {this.withLayout(LoginPage)}
+        </Route>
+        <Route path="/assist" exact={true}>
+          {this.withLayout(AssistantPage)}
         </Route>
       </Switch>
 
