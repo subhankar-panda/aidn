@@ -2,7 +2,18 @@ var express = require('express')
 var router = express.Router()
 const request = require('request');
 const fs = require('fs');
+const multer = require("multer");
+const path = require('path');
 
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+  }
+})
+const upload = multer({storage})
 let rawdata = fs.readFileSync('.env.json');
 let env_vars = JSON.parse(rawdata);
 
@@ -63,9 +74,9 @@ const uriBase = env_vars.endpoint_face;
 
 router.get('/', (req, res) => console.log('this is the /api/ handler'))
 
-router.post('/signup', (req, res) => {
-    
-
+router.post('/signup', upload.single('pic'), (req, res) => {
+    console.log(req.body)
+    console.log(req.file, req.files)
 });
 
 router.post('/detectFaces', (req, res) => {

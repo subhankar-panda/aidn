@@ -10,6 +10,7 @@
     "concurrently": "^5.1.0",
     "express": "^4.17.1",
     "formik": "^2.1.4",
+    "multer": "^1.4.2",
     "nodemon": "^2.0.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -20,6 +21,7 @@
     "reactstrap": "^8.4.1",
     "request": "^2.88.2",
     "superagent": "^5.2.1",
+    "superagent-no-cache": "^0.1.1",
     "yup": "^0.28.1"
   },
   "scripts": {
