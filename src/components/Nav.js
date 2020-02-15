@@ -18,7 +18,7 @@ const TopNav = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-
+  console.log(props);
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -50,7 +50,8 @@ const TopNav = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>brought to you by team panda</NavbarText>
+          <NavbarText>Hi, {props.user && props.user.name}</NavbarText>
+          <NavbarText><img className="rounded-circle" style={{width: '3rem'}} src={props.user && props.user.picUrl}></img></NavbarText>
         </Collapse>
       </Navbar>
     </div>

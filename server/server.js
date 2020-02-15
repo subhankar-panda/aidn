@@ -2,11 +2,7 @@ const express = require('express');
 const ApiHandler = require('./api');
 var bodyParser = require('body-parser')
 var path = require('path');
-const multer = require("multer");
-const upload = multer({
-  dest: "./upload"
-  // you might also want to set some limits: https://github.com/expressjs/multer#limits
-});
+
 function startInstance() {
   const app = express();
 

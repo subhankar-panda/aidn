@@ -124,7 +124,7 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                                 console.log(response.statusCode)
                                 console.log("training..")
                             });
-                            res.status(200);
+                            res.status(200).send({personId});
                         });
                     });
                 } else {
@@ -192,5 +192,6 @@ router.get('/lookup', upload.single('pic'), (req, res) => {
         });
     });
 });
+
 
 module.exports = router;
