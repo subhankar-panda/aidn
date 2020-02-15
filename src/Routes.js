@@ -8,6 +8,7 @@ import EntryPage from './pages/EntryPage';
 import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
 import AssistantPage from './pages/AssistantPage';
+import EmergencyPage from './pages/EmergencyPage';
 
 class Routes extends React.Component {
 
@@ -32,7 +33,7 @@ class Routes extends React.Component {
 
   withLayout = (Child) => (
     <>
-      <Nav user={this.state.user}/>
+      <Nav user={this.state.user} authenticated={this.state.authenticated}/>
       <Child />
     </>
   );
@@ -57,6 +58,9 @@ class Routes extends React.Component {
         </Route>
         <Route path="/assist" exact={true}>
           {this.withLayout(AssistantPage)}
+        </Route>
+        <Route path="/emergency" exact={true}>
+          {this.withLayout(EmergencyPage)}
         </Route>
       </Switch>
 

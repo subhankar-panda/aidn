@@ -11,14 +11,15 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  NavbarText,
+  Button
 } from 'reactstrap';
 
 const TopNav = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-  console.log(props);
+  const {authenticated} = props;
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -27,10 +28,13 @@ const TopNav = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/signup/">sign up</NavLink>
+              {!authenticated && <NavLink href="/signup/">sign up</NavLink>}
             </NavItem>
             <NavItem>
-              <NavLink href="/login/">log in</NavLink>
+              {!authenticated && <NavLink href="/login/">log in</NavLink>}
+            </NavItem>
+            <NavItem>
+              <NavLink href="/emergency"><Button color='danger'>Medical Emergency</Button></NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
@@ -50,7 +54,7 @@ const TopNav = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Hi, {props.user && props.user.name}</NavbarText>
+          {props.user && <NavbarText>Hi, {props.user.name}</NavbarText>}
           <NavbarText><img className="rounded-circle" style={{width: '3rem'}} src={props.user && props.user.picUrl}></img></NavbarText>
         </Collapse>
       </Navbar>
