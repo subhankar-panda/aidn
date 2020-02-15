@@ -1,10 +1,8 @@
 import React from 'react';
-import { Formik, useFormik, Field } from 'formik';
+import { Formik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
 import FileUpload from './FileUpload.js';
-import Camera from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
-
+import {signUp} from '../../data/index';
 import * as Yup from 'yup';
 
 const customInputForm = ({field, form: {touched, errors}, ...props}) => (
@@ -38,21 +36,25 @@ const SignUpPage = () => {
       .email('Invalid email address'),
     phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   })
+
+  var signupUser = async (values) => {
+    console.log(values);
+    await signUp(values)
+  }
+
   return (
-    <Formik
-                initialValues={{
-                    email: '',
-                    address: '',
-                    password: ''
-                }}
-                validationSchema={validationSchema}
-                onSubmit={values => {
-                    // same shape as initial values
-                    console.log(values);
-                }}>
-              <div className="d-flex">
+          <Formik
+            initialValues={{
+                email: '',
+                address: '',
+                password: ''
+            }}
+            validationSchema={validationSchema}
+            onSubmit={signupUser}>
+{              ({handleSubmit}) => (
+                <div className="d-flex">
                 <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img> 
-                <Form className="w-50 mx-auto mt-5">
+                <Form className="w-50 mx-auto mt-5" onSubmit={handleSubmit}>
                     <h2>your information:</h2>
                     <FormGroup>
                         <Label for="firstName">first name</Label>
@@ -96,15 +98,11 @@ const SignUpPage = () => {
                       <Label for="contact1">email</Label>
                       <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                     </FormGroup>
-
-                    {/*<Camera onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } } style={{width: '500px', margin: 'auto'}} />
-*/}
                     <Button color="info">sign up</Button>
 
                     <Button color="link" href="/login/">log in instead!</Button>
-
                 </Form>
-              </div>
+              </div>)}
             </Formik>
   );
 };
