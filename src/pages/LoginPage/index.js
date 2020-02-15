@@ -35,7 +35,7 @@ const LoginPage = () => {
                     console.log(values);
                 }}>
               <div className="d-flex">
-                <img src="../../aidnlogo.png" className="img-thumbnail w-25 text-center m-auto"></img>
+                <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img>
                 <Form className="w-50 mx-auto mt-5">
                     
                     <FormGroup>
