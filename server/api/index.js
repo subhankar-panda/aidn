@@ -139,10 +139,8 @@ router.post('/login', (req, res) => {
 
 });
 
-router.get('/lookup', upload.single('pic'), (req, res) => {
-    req.body = JSON.parse(req.body.body)
-
-
+router.post('/lookup', upload.single('pic'), (req, res) => {
+    console.log(req.body, req.file  )
     let ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
     ref.upload(req.file.path).then((ree) => {
         url = "https://storage.googleapis.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
@@ -185,9 +183,8 @@ router.get('/lookup', upload.single('pic'), (req, res) => {
                     console.log('Error: ', error);
                     return;
                   }
-                  jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
-                  console.log('JSON Response\n');
-                  console.log(jsonResponse);
+                  jsonResponse = JSON.parse(body);
+                  res.send(jsonResponse)
             });
         });
     });
