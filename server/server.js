@@ -17,7 +17,7 @@ function startInstance() {
   app.use('/static', express.static(path.join(__dirname, '../build/static')));
   app.use(express.static(path.join(__dirname, '../build')));
 
-  const PORT = process.env.port || 5000;
+  const PORT = process.env.port || process.env.PORT || 5000;
 
   app.use('/api', ApiHandler);
 
