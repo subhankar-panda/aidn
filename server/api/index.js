@@ -62,8 +62,6 @@ router.post('/signup', upload.single('pic'), (req, res) => {
     };
 
     request.post(options, (error, response, body) => {
-        console.log("more re???")
-        console.log(body)
         if (error) {
             console.log('Error: ', error);
             return;
@@ -137,80 +135,62 @@ router.post('/signup', upload.single('pic'), (req, res) => {
     });
 });
 
-router.post('/login', upload.single('pic'), (req, res) => {
+router.post('/login', (req, res) => {
 
 });
 
 router.get('/lookup', upload.single('pic'), (req, res) => {
+    req.body = JSON.parse(req.body.body)
+
+
     let ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
-    let url = "https://storage.googleapis.com/ivory-strategy-268307.appspot.com/1581769067697.jpg"
-    // do face detect on url and get list of face ids
-
-    const params = {
-        'returnFaceId': 'true'
-    };
-
-    let options = {
-        uri: uriBase+"face/v1.0/detect",
-        qs: params,
-        body: '{"url": ' + '"' + url + '"}',
-        headers: {
-            'Content-Type': 'application/json',
-            'Ocp-Apim-Subscription-Key' : subscriptionKey
-        }
-    };
-
-    request.post(options, (error, response, body) => {
-        if (error) {
-          console.log('Error: ', error);
-          return;
-        }
-        let jsonResponse = JSON.parse(body);
-        let faceIds = jsonResponse.map(x => x.faceId)
+    ref.upload(req.file.path).then((ree) => {
+        url = "https://storage.googleapis.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
+        const params = {
+            'returnFaceId': 'true'
+        };
     
-        let opts = {
-            uri: uriBase+"face/v1.0/identify",
-            body: JSON.stringify({
-                faceIds: faceIds,
-                personGroupId: "treehacks7"
-            }),
+        let options = {
+            uri: uriBase+"face/v1.0/detect",
+            qs: params,
+            body: '{"url": ' + '"' + url + '"}',
             headers: {
                 'Content-Type': 'application/json',
                 'Ocp-Apim-Subscription-Key' : subscriptionKey
             }
         };
     
-        request.post(opts, (error, response, body) => {
+        request.post(options, (error, response, body) => {
             if (error) {
-                console.log('Error: ', error);
-                return;
-              }
-              jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
-              console.log('JSON Response\n');
-              console.log(jsonResponse);
+              console.log('Error: ', error);
+              return;
+            }
+            let jsonResponse = JSON.parse(body);
+            let faceIds = jsonResponse.map(x => x.faceId)
+        
+            let opts = {
+                uri: uriBase+"face/v1.0/identify",
+                body: JSON.stringify({
+                    faceIds: faceIds,
+                    personGroupId: "treehacks7"
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Ocp-Apim-Subscription-Key' : subscriptionKey
+                }
+            };
+        
+            request.post(opts, (error, response, body) => {
+                if (error) {
+                    console.log('Error: ', error);
+                    return;
+                  }
+                  jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
+                  console.log('JSON Response\n');
+                  console.log(jsonResponse);
+            });
         });
     });
-})
-
-let opts = {
-    uri: uriBase+"face/v1.0/persongroups/treehacks7",
-    body: JSON.stringify({
-        name: "treehacks7"
-    }),
-    headers: {
-        'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key' : subscriptionKey
-    }
-};
-
-request.put(opts, (error, response, body) => {
-    if (error) {
-        console.log('Error: ', error);
-        return;
-    }
-    jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
-    console.log('JSON Response\n');
-    console.log(jsonResponse);
 });
 
 module.exports = router;
