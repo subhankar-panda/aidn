@@ -34,7 +34,7 @@ class Routes extends React.Component {
   withLayout = (Child) => (
     <>
       <Nav user={this.state.user} authenticated={this.state.authenticated}/>
-      <Child />
+      <Child user={this.state.user}/>
     </>
   );
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { throwStatement } from '@babel/types';
+import { withFirebase } from '../../data/firebase';
 
 class EntryPage extends React.Component {
 
@@ -73,7 +74,7 @@ handlePasswordChange = function(e) {
         </FormGroup>
         <FormGroup check>
             <Label check>
-              <Input type="checkbox" onClick={(e) => this.handleCheckbox('epilepsy/seizures', e)} value={this.state.epilepsyseizures}/>{' '}
+              <Input type="checkbox" onClick={(e) => this.handleCheckbox('epilepsyseizures', e)} value={this.state.epilepsyseizures}/>{' '}
               Epilepsy/Seizures
             </Label>
         </FormGroup>
@@ -97,7 +98,7 @@ handlePasswordChange = function(e) {
         </FormGroup>
         <FormGroup check>
             <Label check>
-              <Input type="checkbox" onClick={(e) => this.handleCheckbox('psyc', e)} value={this.state.psycdisease}/>{' '}
+              <Input type="checkbox" onClick={(e) => this.handleCheckbox('psycdisease', e)} value={this.state.psycdisease}/>{' '}
               Psychiatric Disease
             </Label>
         </FormGroup>
@@ -138,12 +139,34 @@ handlePasswordChange = function(e) {
     );
     
   }
-  handleSubmit = () => {
-    console.log("diabetes: " + this.state.diabetes);
-    console.log("allergies: " + this.state.allergies);
-    console.log("conditions: " + this.state.conditions);
-    console.log("message: " + this.state.message);
+  handleSubmit = async () => {
+    let conditions = []
+    const mapper = {
+      'arthritis': 'Arthritis',
+      'cancer': 'Cancer',
+      'diabetes': 'Diabetes',
+      'depression': 'Depression',
+      'epilepsyseizures': 'Epilepsy',
+      'heartproblems': 'Heart Problems',
+      'heartsurgery': 'Heart Surgery',
+      'highbp': 'High Blood Pressure',
+      'psycdisease': 'Psychiatric Disease',
+      'stroke': 'Stroke',
+      'thyroid': 'Thyroid'
+    }
+
+    for (const k in mapper) {
+      if (this.state[k] == true) {
+        conditions.push(mapper[k])
+      }
+    }
+
+    conditions.push(this.state.conditions)
+
+    let data = {conditions, allergies: this.state.allergies, message: this.state.message, personId: this.props.user.personId};
+    await this.props.firebase.sendMedicalInfo(data);
+    console.log(conditions)
   }
 }
 
-export default EntryPage;
+export default withFirebase(EntryPage);

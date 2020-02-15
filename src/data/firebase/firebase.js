@@ -26,6 +26,8 @@ class Firebase {
     this.analytics = app.analytics();
   }
 
+  sendMedicalInfo = async (data) => (await this.firestore.collection('records').add(data))
+
   getUserById = async (personId) => (await this.firestore.collection('users').doc(personId).get()).data()
  
 }
