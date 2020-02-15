@@ -1,0 +1,11 @@
+.home {
+  background: #ffffff;
+  font-family: 'EB Garamond', serif;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+.home-text {
+  font-size: 3rem;
+}
