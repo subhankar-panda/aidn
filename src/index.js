@@ -4,13 +4,16 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from 'react-router-dom';
 import Routes from './Routes';
+import Firebase, {FirebaseContext} from './data/firebase';
 
 import 'bootstrap/dist/css/bootstrap.css'
 
 
 ReactDOM.render(
   <BrowserRouter>
-    <Routes />
+    <FirebaseContext.Provider value={new Firebase()}>
+      <Routes />
+    </FirebaseContext.Provider>
   </BrowserRouter>
 , document.getElementById('root'));
 

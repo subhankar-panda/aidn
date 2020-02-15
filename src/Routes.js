@@ -1,5 +1,6 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
+import {withFirebase} from './data/firebase'
 import HomePage from './pages/HomePage';
 import Nav from './components/Nav';
 import DoctorsPage from './pages/DoctorsPage';
@@ -10,9 +11,28 @@ import AssistantPage from './pages/AssistantPage';
 
 class Routes extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      authenticated: false,
+      user: null
+    }
+  }
+
+    async componentDidMount() {
+      try {
+
+        const user = await this.props.firebase.getUserById(localStorage.person);
+        this.setState({user, authenticated: true})
+      } catch(e) {
+        console.error(e);
+        this.setState({authenticated: false});
+      }
+    }
+
   withLayout = (Child) => (
     <>
-      <Nav />
+      <Nav user={this.state.user}/>
       <Child />
     </>
   );
@@ -44,4 +64,4 @@ class Routes extends React.Component {
   }
 }
 
-export default Routes;
+export default withFirebase(Routes);
