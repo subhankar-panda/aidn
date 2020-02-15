@@ -1,8 +1,6 @@
 import React from 'react';
 import { Formik, useFormik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
-import Camera from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
 
 import * as Yup from 'yup';
 
