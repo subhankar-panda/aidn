@@ -51,7 +51,7 @@ router.get('/', (req, res) => console.log('this is the /api/ handler'))
 router.post('/signup', upload.single('pic'), (req, res) => {
     req.body = JSON.parse(req.body.body)
     let options = {
-        uri: uriBase+"face/v1.0/persongroups/treehacks/persons",
+        uri: uriBase+"face/v1.0/persongroups/treehacks7/persons",
         body: JSON.stringify({
             "name":req.body.firstName+req.body.lastName
         }),
@@ -62,6 +62,8 @@ router.post('/signup', upload.single('pic'), (req, res) => {
     };
 
     request.post(options, (error, response, body) => {
+        console.log("more re???")
+        console.log(body)
         if (error) {
             console.log('Error: ', error);
             return;
@@ -74,9 +76,7 @@ router.post('/signup', upload.single('pic'), (req, res) => {
 
         ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
         ref.upload(req.file.path).then((ree) => {
-            console.log("REEEE")
-            console.log(ree[0])
-            url = "https://storage.cloud.google.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
+            url = "https://storage.googleapis.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
             let userref = db.collection('users').doc(personId);
             userref.get().then(doc => {
                 if (!doc.exists) {
@@ -86,7 +86,7 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                         salt: salt,
                         hash: hash,
                         picUrl: url, 
-                        personGroupId: "treehacks",
+                        personGroupId: "treehacks7",
                         personId: personId,
                         role: "user"
                     }
@@ -94,8 +94,12 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                         console.log('Added document with pid: ', personId);
 
                         // create personGroup person
+                        let ps = {
+                            "personId":personId
+                        }
                         let opts = {
-                            uri: uriBase+"face/v1.0/persongroups/treehacks/persons/persistedFaces",
+                            uri: uriBase+"face/v1.0/persongroups/treehacks7/persons/{personId}/persistedFaces",
+                            qs: ps,
                             body: JSON.stringify({
                                 "url":url
                             }),
@@ -109,6 +113,19 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                                 console.log('Error: ', error);
                                 return;
                             }
+                            console.log('REEEEEEEEEEEEEE')
+                            console.log(body)
+                            let opt = {
+                                uri: uriBase+"face/v1.0/persongroups/treehacks7/train",
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Ocp-Apim-Subscription-Key' : subscriptionKey
+                                }
+                            };
+                            request.post(opt, (error, response, body) => {
+                                console.log(response.statusCode)
+                                console.log("training..")
+                            });
                             res.status(200);
                         });
                     });
@@ -120,8 +137,80 @@ router.post('/signup', upload.single('pic'), (req, res) => {
     });
 });
 
-router.post('/detectFaces', (req, res) => {
-  
+router.post('/login', upload.single('pic'), (req, res) => {
+
+});
+
+router.get('/lookup', upload.single('pic'), (req, res) => {
+    let ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
+    let url = "https://storage.googleapis.com/ivory-strategy-268307.appspot.com/1581769067697.jpg"
+    // do face detect on url and get list of face ids
+
+    const params = {
+        'returnFaceId': 'true'
+    };
+
+    let options = {
+        uri: uriBase+"face/v1.0/detect",
+        qs: params,
+        body: '{"url": ' + '"' + url + '"}',
+        headers: {
+            'Content-Type': 'application/json',
+            'Ocp-Apim-Subscription-Key' : subscriptionKey
+        }
+    };
+
+    request.post(options, (error, response, body) => {
+        if (error) {
+          console.log('Error: ', error);
+          return;
+        }
+        let jsonResponse = JSON.parse(body);
+        let faceIds = jsonResponse.map(x => x.faceId)
+    
+        let opts = {
+            uri: uriBase+"face/v1.0/identify",
+            body: JSON.stringify({
+                faceIds: faceIds,
+                personGroupId: "treehacks7"
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Ocp-Apim-Subscription-Key' : subscriptionKey
+            }
+        };
+    
+        request.post(opts, (error, response, body) => {
+            if (error) {
+                console.log('Error: ', error);
+                return;
+              }
+              jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
+              console.log('JSON Response\n');
+              console.log(jsonResponse);
+        });
+    });
 })
+
+let opts = {
+    uri: uriBase+"face/v1.0/persongroups/treehacks7",
+    body: JSON.stringify({
+        name: "treehacks7"
+    }),
+    headers: {
+        'Content-Type': 'application/json',
+        'Ocp-Apim-Subscription-Key' : subscriptionKey
+    }
+};
+
+request.put(opts, (error, response, body) => {
+    if (error) {
+        console.log('Error: ', error);
+        return;
+    }
+    jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
+    console.log('JSON Response\n');
+    console.log(jsonResponse);
+});
 
 module.exports = router;
