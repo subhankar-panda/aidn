@@ -126,7 +126,7 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                                 console.log(response.statusCode)
                                 console.log("training..")
                             });
-                            res.status(200);
+                            res.status(200).send({personId});
                         });
                     });
                 } else {
@@ -191,26 +191,5 @@ router.get('/lookup', upload.single('pic'), (req, res) => {
         });
     });
 })
-
-let opts = {
-    uri: uriBase+"face/v1.0/persongroups/treehacks7",
-    body: JSON.stringify({
-        name: "treehacks7"
-    }),
-    headers: {
-        'Content-Type': 'application/json',
-        'Ocp-Apim-Subscription-Key' : subscriptionKey
-    }
-};
-
-request.put(opts, (error, response, body) => {
-    if (error) {
-        console.log('Error: ', error);
-        return;
-    }
-    jsonResponse = JSON.stringify(JSON.parse(body), null, '  ');
-    console.log('JSON Response\n');
-    console.log(jsonResponse);
-});
 
 module.exports = router;

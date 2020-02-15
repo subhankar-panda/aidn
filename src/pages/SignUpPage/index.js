@@ -3,6 +3,7 @@ import { Formik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
 import FileUpload from './FileUpload.js';
 import {signUp} from '../../data/index';
+import {withFirebase} from '../../data/firebase';
 import * as Yup from 'yup';
 
 const customInputForm = ({field, form: {touched, errors}, ...props}) => (
@@ -42,9 +43,9 @@ class SignUpPage extends React.Component {
 
   signupUser = async (values) => {
     console.log(values);
-    await signUp(values)
+    const res = await signUp(values);
+    localStorage.setItem('person', res.body.personId)
   }
-
   render() {
     return (
       <Formik
