@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Field } from 'formik';
-import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
+import { Toast, ToastBody, ToastHeader, Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
 import FileUpload from './FileUpload.js';
 import {signUp} from '../../data/index';
 import {withFirebase} from '../../data/firebase';
@@ -25,6 +25,9 @@ class SignUpPage extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      success: false,
+    }
     this.schema =  Yup.object({
       firstName: Yup.string()
         .max(15, 'Must be 15 characters or less')
@@ -118,8 +121,20 @@ class SignUpPage extends React.Component {
                   <Label for="contact1">Email</Label>
                   <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                 </FormGroup>
-                <Button color="info" type="submit">Sign Up</Button>
+                <Button color="info" onClick={() => this.setState({success: true})} type="submit">Sign Up</Button>
                 <Button color="link" href="/login/">Log In Instead!</Button>
+
+                {this.state.success && 
+                <div className="p-3 my-2 rounded">
+                  <Toast>
+                    <ToastHeader>
+                      Registration Success!
+                    </ToastHeader>
+                    <ToastBody>
+                      Navigate to another tab to explore your newly enabled aidn account!
+                    </ToastBody>
+                  </Toast>
+                </div>}
             </form>)}
         </Formik>
       </div>

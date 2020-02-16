@@ -17,8 +17,11 @@ html, body, #root {
 
 .color-yellow {
   color: #ffbf69;
+<<<<<<< HEAD
 }
 
 .bg-yellow {
   background-color: #ffbf69 !important;
+=======
+>>>>>>> 29a1b3353eee28ca4485727375553690ff42dd86
 }
