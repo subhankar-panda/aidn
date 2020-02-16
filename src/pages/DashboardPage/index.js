@@ -1,13 +1,14 @@
 import React from 'react';
 import {withFirebase} from '../../data/firebase';
 import { Badge } from 'reactstrap';
-
+import './index.css'
 class DashboardPage extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      records: []
+      records: [],
+      trials: []
     }
   }
 
@@ -16,8 +17,14 @@ class DashboardPage extends React.Component {
     this.setState({records: records.docs});
   }
 
+  async fetchTrials() {
+    const trials = await this.props.firebase.getTrials()
+    this.setState({trials: trials.docs.map(d => d.data())})
+  }
+
   async componentDidMount() {
     await this.fetchDocs();
+    await this.fetchTrials();
   }
 
   renderDocs() {
@@ -25,7 +32,7 @@ class DashboardPage extends React.Component {
     return (
       <div className="row mx-0 px-0">
         <div className="col">
-          <h1 className="mb-3">Your Medical Records</h1>
+          <h1 className="mb-3">Medical Records</h1>
           {data.map(d => (
             <div className="mb-5 bg-white shadow w-100 br p-3">
               <h5>Document <b className="color-blue">{d.id}</b></h5>
@@ -58,7 +65,35 @@ class DashboardPage extends React.Component {
     return (
       <div className="row mx-0 px-0 pt-4">
         <div className="col">
-        <h1 className="mb-3">Your <span className="color-blue">aidn</span> Activity</h1>
+          <h1 className="mb-3"><span className="color-blue">aidn</span> Activity</h1>
+          {this.state.trials.map((d, i) => (
+            <div className="bg-white br shadow p-3 mb-3">
+              <h5>Check-in <b className="color-blue">{i}</b></h5>
+              {d.symptoms && (
+                <>
+                <div className="color-yellow mt-3">
+                  Reported Symptoms
+                </div>
+                <div>
+                  <Badge className="m-1 ">{d.symptoms}</Badge>
+                </div>
+                </>
+              )}
+              {d.tip && (
+                <>
+                <div className="color-yellow mt-3">
+                  aidn's Feedback
+                </div>
+                <div>
+                  {d.tip}
+                </div>
+                </>
+              )}
+                <div>
+                  {!d.tip && !d.symptoms && 'No Actionable aidn Feedback'}
+                </div>
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -74,6 +109,27 @@ class DashboardPage extends React.Component {
             <img src={user.picUrl} className="img-responsive w-100 br shadow p-0"></img>
             <h1 className="my-2">{user.name}</h1>
             <h5>{user.email}</h5>
+            <div className="br bg-white shadow p-3 mt-3">
+              <h5>Statistics</h5>
+              <div className="row">
+                <div className="col stat">
+                  <div className="text-center emo">📝</div>
+                  <div>
+                    {this.state.records.length} Medical Report {this.state.records.length > 1 ? 's' : ''}
+                  </div>
+                </div>
+                <div className="col stat">
+                <div className="text-center emo">📈</div>
+
+                  {this.state.trials.length} Completed Checkins
+                </div>
+                <div className="col stat text-center">
+                <div className="text-center emo">🔥</div>
+
+                  Usage streak: 2 days
+                </div>
+              </div>
+            </div>
           </div>
           <div className="col-md-6 offset-md-1">
             {this.renderDocs()}

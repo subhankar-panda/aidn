@@ -145,7 +145,26 @@ router.post('/signup', upload.single('pic'), (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-
+    console.log(req.body)
+    let userref = db.collection('users').where('email', '==', req.body.email).get().then(doc => {
+        if (!doc || !doc.docs ||!doc.docs[0].exists) {
+            res.send({success: false});
+        } else {
+            let currDoc = doc.docs[0].data()
+            //check password
+            let salt = currDoc.salt;
+            console.log(currDoc )
+            if (currDoc.hash.passwordHash == sha512(req.body.password, salt).passwordHash) {
+                console.log("logging in")
+                res.send({success: true, personId: currDoc.personId});
+            } else {
+                res.send({success: false});
+            }
+        }
+    }).catch(function(error) {
+        // Handle Errors here.
+        console.log(error)
+    });
 });
 
 router.get('/lookup', upload.single('pic'), (req, res) => {

@@ -12,6 +12,24 @@
 
 }
 
+@keyframes rotatelogo {
+  from { transform: rotateY(0deg) rotateX(0deg) perspective(400px);}
+  to { transform: rotateY(22deg) rotateX(30deg) perspective(200px);}
+}
+
+.homelogo {
+  animation-name: rotatelogo;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 3;
+  animation-duration: 1s;
+  animation-direction: alternate-reverse;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+
+}
+
 .yellow-bar {
   position: absolute;
   height: 1.6rem;

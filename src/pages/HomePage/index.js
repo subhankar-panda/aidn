@@ -10,16 +10,16 @@ function App(props) {
       <Nav user={props.user} authenticated={props.authenticated} />
       <div className="row my-auto w-100 home__text">
         <div className="col-md-6 d-flex flex-column">
-          <img src='/aidn2.png' className="mx-auto img-fluid" style={{width: '60%'}}></img>
+          <img src='/aidn2.png' className="mx-auto img-fluid homelogo" style={{width: '60%'}}></img>
           {props.authenticated && <Link to='/dashboard' className="text-center">
-            <Button color='primary' size='lg' className="br text-large shadow" >Go To Dashboard</Button>
+            <Button color='primary' size='lg' className="br text-large shadow bg-yellow" >Go To Dashboard</Button>
           </Link>}
         </div>
         <div className="col-md-6 d-flex">
           <div className="w-100 home-text my-auto">
             {!props.authenticated && 'Wellness Tailored For You.'}
             {props.authenticated && 
-              <div className="text-primary">
+              <div className="color-yellow">
                 Welcome back, <span className="name">{props.user.name}</span>
               </div>
             }
