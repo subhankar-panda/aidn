@@ -147,13 +147,16 @@ router.post('/signup', upload.single('pic'), (req, res) => {
 router.post('/login', (req, res) => {
     console.log(req.body)
     let userref = db.collection('users').where('email', '==', req.body.email).get().then(doc => {
-        if (!doc[0].exists) {
+        if (!doc || !doc.docs ||!doc.docs[0].exists) {
             res.send({success: false});
         } else {
+            let currDoc = doc.docs[0].data()
             //check password
-            let salt = doc[0].salt;
-            if (doc[0].hash == sha512(req.body.password, salt)) {
-                res.send({success: true, personId: doc[0].personId});
+            let salt = currDoc.salt;
+            console.log(currDoc )
+            if (currDoc.hash.passwordHash == sha512(req.body.password, salt).passwordHash) {
+                console.log("logging in")
+                res.send({success: true, personId: currDoc.personId});
             } else {
                 res.send({success: false});
             }

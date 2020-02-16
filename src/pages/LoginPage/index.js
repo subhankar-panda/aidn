@@ -15,54 +15,59 @@ const customInputForm = ({field, form: {touched, errors}, ...props}) => (
   </div>
 );
 
-const LoginPage = () => {
+class LoginPage extends React.Component {
 
-  var validationSchema =  Yup.object({
-    email: Yup.string()
-      .email('Invalid email address')
-      .required('Required'),
-    password: Yup.string()
-      .required('Required'),
-  })
-  return (
-    <Formik
-                initialValues={{
-                    email: '',
-                    password: ''
-                }}
-                validationSchema={validationSchema}
-                onSubmit={async (values) => {
-                    try {
-                      let res = await login(values.email, values.password)
+  constructor(props) {
+    super(props)
+    this.schema = Yup.object({
+      email: Yup.string()
+        .email('Invalid email address')
+        .required('Required'),
+      password: Yup.string()
+        .required('Required'),
+    })
+  }
 
-                      if (res.success) {
-                        localStorage.setItem('person', res.personId);
-                        window.history.pushState('/')
-                      }
-                    } catch (e) {
-                      console.error(e)
-                    }
-                    // same shape as initial values
-                    this.props.history.push('/')
-                }}>
-              <div className="d-flex">
-                <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img>
-                <Form className="w-50 mx-auto mt-5">
-                    
-                    <FormGroup>
-                        <Label for="exampleEmail">email</Label>
-                        <Field name="email" type={'email'} component={customInputForm}/>
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for="examplePassword">password</Label>
-                        <Field name="password" type={'password'} component={customInputForm}/>
-                    </FormGroup>
-                    <Button color="info" >log in</Button>
-                    <Button color="link" href="/signup/">sign up instead!</Button>
-                </Form>
-              </div>
-            </Formik>
-  ); 
+  onFinalSubmit = async (values) => {
+    try {
+      let res = await login(values.email, values.password)
+      console.log(res)
+      if (res.body.success) {
+        localStorage.setItem('person', res.body.personId);
+        window.location.replace('/')
+      }
+    } catch (e) {
+      console.error(e)
+    }
+}
+
+  render() {
+    return (
+      <Formik
+        initialValues={{
+            email: '',
+            password: ''
+        }}
+        validationSchema={this.schema}
+        onSubmit={this.onFinalSubmit}>
+        {({handleSubmit}) => 
+          (<Form className="w-50 mx-auto mt-5" onSubmit={handleSubmit}>
+            
+            <FormGroup>
+                <Label for="exampleEmail">email</Label>
+                <Field name="email" type={'email'} component={customInputForm}/>
+            </FormGroup>
+            <FormGroup>
+                <Label for="examplePassword">password</Label>
+                <Field name="password" type={'password'} component={customInputForm}/>
+            </FormGroup>
+            <Button color="info" >log in</Button>
+            <Button color="link" href="/signup/">sign up instead!</Button>
+        </Form>)}
+    </Formik>
+    ); 
+  }
+  
 };
 
 export default withRouter(LoginPage);
