@@ -6,6 +6,8 @@ import urllib3
 http = urllib3.PoolManager()
 
 url = "aidn-web.azurewebsites.net/api/history"
+url_help = "aidn-web.azurewebsites.net/api/help_messages"
+
 #url = 'localhost:5000/api/history'
 
 welcome_img = 'https://img.freepik.com/free-vector/illustration-of-healthy-lifestyle_53876-28533.jpg?size=338&ext=jpg'
@@ -98,6 +100,12 @@ def get_welcome_response():
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, speech_output, welcome_img, reprompt_text, should_end_session))
+
+def set_help():
+    card_title = "Welcome"
+    speech_output = "Contacting your emergency contacts now."
+
+    http.request('POST', url_help, body = json.dumps({}}),headers = {'Content-Type': 'application/json'}, retries = False)
 
 def handle_session_end_request():
     card_title = "Session Ended"

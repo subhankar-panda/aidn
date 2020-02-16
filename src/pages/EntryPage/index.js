@@ -43,7 +43,7 @@ handlePasswordChange = function(e) {
   render() {
     console.log(this.state)
     return (
-      <div className="w-75 mx-auto">
+      <div className="w-75 mx-auto" style={{paddingBottom: "40px"}}>
         <Form>
         <h3 className="mt-4 mx-auto">medical history</h3>
         <h4 className="mt-4">please check all that apply to you:</h4>
@@ -166,6 +166,7 @@ handlePasswordChange = function(e) {
     let data = {conditions, allergies: this.state.allergies, message: this.state.message, personId: this.props.user.personId};
     await this.props.firebase.sendMedicalInfo(data);
     console.log(conditions)
+    window.location.href = window.location.origin + '/dashboard/'
   }
 }
 

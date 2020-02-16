@@ -34,7 +34,7 @@ class DashboardPage extends React.Component {
         <div className="col">
           <h1 className="mb-3">Medical Records</h1>
           {data.map(d => (
-            <div className="bg-white shadow w-100 br p-3">
+            <div className="bg-white shadow w-100 br p-3 mb-3">
               <h5>Document <b className="color-blue">{d.id}</b></h5>
               <div className="mt-1">
                 <div>
@@ -100,7 +100,7 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    if (!this.props.user) return <div>go away :(</div>
+    if (!this.props.user) return <div className="w-100 h-100 d-flex"><div className="loader"></div></div>
     const {user} = this.props;
     return (
       <div className="w-100 h-100 container mt-5">

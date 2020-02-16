@@ -225,5 +225,28 @@ router.post('/history', (req,res) => {
     });
 })
 
+router.post('/api/help_messages', (req, res) => {
+    console.log("gets to here in app.post");
+    const client = require('twilio')(
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN
+    );
+
+    res.header('Content-Type', 'application/json');
+    client.messages
+      .create({
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: "+15105526323",
+        body: "You have been listed as an emergency contact in aidn. You are being contacted for an emergency."
+      })
+      .then(() => {
+        res.send(JSON.stringify({success: true}));
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(JSON.stringify({success: false}));
+      });
+  });
+
 
 module.exports = router;

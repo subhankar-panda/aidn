@@ -34,6 +34,9 @@ const TopNav = (props) => {
               {!authenticated && <NavLink href="/login/"><Button outline color='secondary'>Log In</Button></NavLink>}
             </NavItem>
             <NavItem>
+            {authenticated && <NavLink href="/dashboard/"><Button outline color='secondary'>Dashboard</Button></NavLink>}
+            </NavItem>
+            <NavItem>
               <NavLink href="/assist/"><Button outline color='secondary'>Assistant</Button></NavLink>
             </NavItem>
             <NavItem>
