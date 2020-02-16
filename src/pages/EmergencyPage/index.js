@@ -10,9 +10,46 @@ class EmergencyPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      foundUser: null
-    }
+      foundUser: null,
+      message: {
+        to: '',
+        body: ''
+      },
+      submitting: false,
+      error: false
+    };
+    this.onHandleMessage = this.onHandleMessage.bind(this);
   }
+
+  onHandleMessage() {
+    this.setState({submitting: true});
+    fetch('/api/messages', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.message)
+    })
+    .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                this.setState({
+                    error: false,
+                    submitting: false,
+                    message: {
+                        to: '',
+                        body: ''
+                    }
+                });
+            } else {
+                this.setState({
+                    error: true,
+                    submitting: false
+                });
+            }
+        });
+  }
+
   handleTakePhoto = async (dataUri) =>  {
     const blob = this.dataURItoBlob(dataUri);
     const response = await facialRecog({image: blob});
@@ -22,7 +59,14 @@ class EmergencyPage extends React.Component {
         console.log(candidate)
         if (candidate.confidence > 0.5) {
           console.log("here!")
-          this.setState({foundUser: await this.props.firebase.getUserById(candidate.personId), error: null});
+          this.setState({foundUser: await this.props.firebase.getUserById(candidate.personId), 
+            message: {
+              to: '+18583817318',
+              body: 'testing 1'
+            },
+            error: false});
+          this.onHandleMessage();
+
           return;
         }
       } 
@@ -52,7 +96,6 @@ class EmergencyPage extends React.Component {
 
     //New Code
     return new Blob([ab], {type: mimeString});
-
 
 }
   render() {

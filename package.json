@@ -26,6 +26,7 @@
     "request": "^2.88.2",
     "superagent": "^5.2.1",
     "superagent-no-cache": "^0.1.1",
+    "twilio": "^3.39.4",
     "yup": "^0.28.1"
   },
   "scripts": {
