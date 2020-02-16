@@ -52,10 +52,6 @@ class SignUpPage extends React.Component {
     this.state = {
       cameraCollapsed: true
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> cf5efc9eee7a5808938869f6839ad7eb9ba1e615
   }
 
   signupUser = async (values) => {
@@ -64,10 +60,6 @@ class SignUpPage extends React.Component {
     localStorage.setItem('person', res.body.personId)
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> cf5efc9eee7a5808938869f6839ad7eb9ba1e615
   render() {
     return (
       <div className='container-fluid h-100 d-flex'>
@@ -129,10 +121,6 @@ class SignUpPage extends React.Component {
                   <Label for="contact1">Email</Label>
                   <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                 </FormGroup>
-<<<<<<< HEAD
-                <Button color="info" type="submit">Sign Up</Button>
-                <Button color="link" href="/login/">Log In Instead!</Button>
-=======
                 <Button color="info" onClick={() => this.setState({success: true})} type="submit">Sign Up</Button>
                 <Button color="link" href="/login/">Log In Instead!</Button>
 
@@ -147,7 +135,6 @@ class SignUpPage extends React.Component {
                     </ToastBody>
                   </Toast>
                 </div>}
->>>>>>> cf5efc9eee7a5808938869f6839ad7eb9ba1e615
             </form>)}
         </Formik>
       </div>
