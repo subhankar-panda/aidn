@@ -167,7 +167,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.get('/lookup', upload.single('pic'), (req, res) => {
+router.post('/lookup', upload.single('pic'), (req, res) => {
     let ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
     ref.upload(req.file.path).then((ree) => {
         url = "https://storage.googleapis.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
