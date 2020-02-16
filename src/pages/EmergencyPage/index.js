@@ -59,10 +59,11 @@ class EmergencyPage extends React.Component {
         console.log(candidate)
         if (candidate.confidence > 0.5) {
           console.log("here!")
-          this.setState({foundUser: await this.props.firebase.getUserById(candidate.personId), 
+          let meep = await this.props.firebase.getUserById(candidate.personId);
+          this.setState({foundUser: meep, 
             message: {
-              to: '+18583817318',
-              body: 'testing 1'
+              to: "+1" + meep.contactNumber,
+              body: meep.name + ' has listed you as their aidn emergency contact. you are receiving this message due to a medical emergency. their location is ' + 'YEET',
             },
             error: false});
           this.onHandleMessage();
