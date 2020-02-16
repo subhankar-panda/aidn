@@ -17,3 +17,10 @@ export async function facialRecog(body) {
     .attach('pic', body.image ? body.image : null)
     .use(nocache)
 }
+
+export async function login(email, password) {
+  return request
+    .post('/api/login')
+    .send({email, password})
+    .use(nocache)
+} 

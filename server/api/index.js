@@ -145,7 +145,23 @@ router.post('/signup', upload.single('pic'), (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-
+    console.log(req.body)
+    let userref = db.collection('users').where('email', '==', req.body.email).get().then(doc => {
+        if (!doc[0].exists) {
+            res.send({success: false});
+        } else {
+            //check password
+            let salt = doc[0].salt;
+            if (doc[0].hash == sha512(req.body.password, salt)) {
+                res.send({success: true, personId: doc[0].personId});
+            } else {
+                res.send({success: false});
+            }
+        }
+    }).catch(function(error) {
+        // Handle Errors here.
+        console.log(error)
+    });
 });
 
 router.get('/lookup', upload.single('pic'), (req, res) => {

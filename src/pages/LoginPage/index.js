@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik, useFormik, Field } from 'formik';
 import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap";
-
+import {withRouter} from 'react-router'
 import * as Yup from 'yup';
+import { login } from '../../data';
 
 const customInputForm = ({field, form: {touched, errors}, ...props}) => (
   <div>
@@ -30,9 +31,19 @@ const LoginPage = () => {
                     password: ''
                 }}
                 validationSchema={validationSchema}
-                onSubmit={values => {
+                onSubmit={async (values) => {
+                    try {
+                      let res = await login(values.email, values.password)
+
+                      if (res.success) {
+                        localStorage.setItem('person', res.personId);
+                        window.history.pushState('/')
+                      }
+                    } catch (e) {
+                      console.error(e)
+                    }
                     // same shape as initial values
-                    console.log(values);
+                    this.props.history.push('/')
                 }}>
               <div className="d-flex">
                 <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img>
@@ -51,7 +62,7 @@ const LoginPage = () => {
                 </Form>
               </div>
             </Formik>
-  );
+  ); 
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);
