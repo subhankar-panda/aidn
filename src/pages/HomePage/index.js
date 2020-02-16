@@ -1,23 +1,32 @@
 import React from 'react';
 import {Button, ButtonGroup} from 'reactstrap';
 import './index.css'; // Import css modules stylesheet as styles
+import Nav from '../../components/Nav';
+import {Link} from 'react-router-dom';
 
-function App() {
+function App(props) {
   return (
-    <div className='home container-fluid h-100 d-flex'>
-      <div className="row my-auto w-100">
-        <div className="col-md-6 d-flex">
-          <img src='/aidn2.png' className=" w-75 mx-auto img-fluid"></img>
+    <div className='home container-fluid h-100 d-flex flex-column'>
+      <Nav user={props.user} authenticated={props.authenticated} />
+      <div className="row my-auto w-100 home__text">
+        <div className="col-md-6 d-flex flex-column">
+          <img src='/aidn2.png' className="mx-auto img-fluid" style={{width: '60%'}}></img>
+          {props.authenticated && <Link to='/dashboard' className="text-center">
+            <Button color='primary' size='lg' className="br text-large shadow" >Go To Dashboard</Button>
+          </Link>}
         </div>
         <div className="col-md-6 d-flex">
-          <div className="my-auto text-center w-100 home-text">
-            aid network. built for you.
+          <div className="w-100 home-text my-auto">
+            {!props.authenticated && 'Wellness Tailored For You.'}
+            {props.authenticated && 
+              <div className="text-primary">
+                Welcome back, <span className="name">{props.user.name}</span>
+              </div>
+            }
+
           </div>  
-          {/*<ButtonGroup className="my-auto">
-            <Button color="info" href="/signup/">sign up</Button>
-            <Button color="info" href="/login/">log in</Button>
-            <Button color="danger">call for help</Button>
-  </ButtonGroup>*/}       
+          <div className="yellow-bar"></div>   
+          <div className="blue-bar"></div>  
         </div>
       </div>
     </div>

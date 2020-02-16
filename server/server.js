@@ -3,6 +3,12 @@ var path = require('path');
 require('dotenv').config({path: path.resolve(__dirname, '../.env')})
 const ApiHandler = require('./api');
 var bodyParser = require('body-parser')
+console.log(  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN)
+const client = require('twilio')(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
 function startInstance() {
   const app = express();
@@ -21,6 +27,24 @@ function startInstance() {
   const PORT = process.env.port || process.env.PORT || 5000;
 
   app.use('/api', ApiHandler);
+
+  app.post('/api/messages', (req, res) => {
+    console.log("gets to here in app.post");
+    res.header('Content-Type', 'application/json');
+    client.messages
+      .create({
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: req.body.to,
+        body: req.body.body
+      })
+      .then(() => {
+        res.send(JSON.stringify({success: true}));
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(JSON.stringify({success: false}));
+      });
+  });
 
   //for everything else, return the HTML from the built client.
   app.get('/*', (req, res) => {

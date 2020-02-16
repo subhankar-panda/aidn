@@ -3,4 +3,18 @@
 html, body, #root { 
   width: 100%;
   height: 100%;
+  background: #fefefa;
+}
+
+.br {
+  border-radius: 1rem !important;
+  padding: 0.5rem;
+}
+
+.color-blue {
+  color: #00c4cc
+}
+
+.color-yellow {
+  color: #ffbf69;
 }

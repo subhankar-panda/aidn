@@ -4,6 +4,7 @@ import { Input, FormFeedback, Form, FormGroup, Label, Button } from "reactstrap"
 import FileUpload from './FileUpload.js';
 import {signUp} from '../../data/index';
 import {withFirebase} from '../../data/firebase';
+import './index.css';
 import * as Yup from 'yup';
 import Cam from './Cam.js';
 
@@ -58,7 +59,8 @@ class SignUpPage extends React.Component {
 
   render() {
     return (
-      <Formik
+      <div className='container-fluid h-100 d-flex'>
+      <Formik 
         initialValues={{email: '', password: ''}}
         validationSchema={this.schema}
         onSubmit={async (values) => {
@@ -117,11 +119,10 @@ class SignUpPage extends React.Component {
                   <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                 </FormGroup>
                 <Button color="info" type="submit">Sign Up</Button>
-
-                <Button color="link" href="/login/">Log-In Instead!</Button>
+                <Button color="link" href="/login/">Log In Instead!</Button>
             </form>)}
-          {/* </div>)} */}
         </Formik>
+      </div>
       );
   }
 };
