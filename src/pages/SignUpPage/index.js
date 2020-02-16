@@ -52,6 +52,7 @@ class SignUpPage extends React.Component {
     this.state = {
       cameraCollapsed: true
     }
+
   }
 
   signupUser = async (values) => {
@@ -59,6 +60,7 @@ class SignUpPage extends React.Component {
     const res = await signUp(values);
     localStorage.setItem('person', res.body.personId)
   }
+
 
   render() {
     return (
