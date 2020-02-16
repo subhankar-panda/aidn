@@ -45,7 +45,7 @@ handlePasswordChange = function(e) {
     return (
       <div className="w-75 mx-auto">
         <Form>
-        <h3 className="mt-4 mx-auto">past medical history</h3>
+        <h3 className="mt-4 mx-auto">medical history</h3>
         <h4 className="mt-4">please check all that apply to you:</h4>
           
           <FormGroup check>
