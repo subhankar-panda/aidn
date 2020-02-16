@@ -23,7 +23,7 @@ const TopNav = (props) => {
   return (
     <div>
       <Navbar color="light" light expand="md" className="bg-transparent">
-        <NavbarBrand href="/">aidn.</NavbarBrand>
+        <NavbarBrand href="/">aidn</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>

@@ -12,7 +12,7 @@ function App(props) {
         <div className="col-md-6 d-flex flex-column">
           <img src='/aidn2.png' className="mx-auto img-fluid" style={{width: '60%'}}></img>
           {props.authenticated && <Link to='/dashboard' className="text-center">
-            <Button color='primary' size='lg' className="br text-large" >Go To Dashboard</Button>
+            <Button color='primary' size='lg' className="br text-large shadow" >Go To Dashboard</Button>
           </Link>}
         </div>
         <div className="col-md-6 d-flex">
