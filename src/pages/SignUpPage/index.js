@@ -119,10 +119,8 @@ class SignUpPage extends React.Component {
                   <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                 </FormGroup>
                 <Button color="info" type="submit">Sign Up</Button>
-
-                <Button color="link" href="/login/">Log-In Instead!</Button>
+                <Button color="link" href="/login/">Log In Instead!</Button>
             </form>)}
-          {/* </div>)} */}
         </Formik>
       </div>
       );
