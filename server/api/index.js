@@ -195,5 +195,16 @@ router.get('/lookup', upload.single('pic'), (req, res) => {
     });
 });
 
+router.post('/history', (req,res) => {
+    console.log(req.body, typeof req.body)
+    let trialref = db.collection('trial').get().then(snap => {
+        size = snap.size;
+        db.collection('trial').doc('trial'+size).set(req.body).then(ref => {
+            console.log('Added document: ', 'trial'+size);
+            res.send(200);
+        });
+    });
+})
+
 
 module.exports = router;
