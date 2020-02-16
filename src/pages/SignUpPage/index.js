@@ -59,7 +59,7 @@ class SignUpPage extends React.Component {
 
   render() {
     return (
-      <div className='sup container-fluid h-100 d-flex'>
+      <div className='container-fluid h-100 d-flex'>
       <Formik 
         initialValues={{email: '', password: ''}}
         validationSchema={this.schema}
