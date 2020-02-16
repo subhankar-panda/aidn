@@ -58,7 +58,6 @@ class EmergencyPage extends React.Component {
       for (const candidate of x.candidates) {
         console.log(candidate)
         if (candidate.confidence > 0.5) {
-          console.log("here!")
           let meep = await this.props.firebase.getUserById(candidate.personId);
           this.setState({foundUser: meep, 
             message: {
