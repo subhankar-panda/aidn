@@ -36,6 +36,10 @@ class SignUpPage extends React.Component {
         .required('Required'),
       password: Yup.string()
         .required('Required'),
+      firstNameContact: Yup.string()
+        .max(15, 'Must be 15 characters or less'),
+      lastNameContact: Yup.string()
+        .max(15, 'Must be 15 characters or less'),
       contactEmail: Yup.string()
         .email('Invalid email address'),
       phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
@@ -55,7 +59,7 @@ class SignUpPage extends React.Component {
   render() {
     return (
       <Formik
-        initialValues={{email: 'me@ucsd.edu', password: ''}}
+        initialValues={{email: '', password: ''}}
         validationSchema={this.schema}
         onSubmit={async (values) => {
           await this.signupUser(values)
@@ -98,11 +102,11 @@ class SignUpPage extends React.Component {
                 <h8>This person will be contacted in the event of an emergency</h8>
                 <FormGroup>
                   <Label for="contact1">First Name</Label>
-                  <Field name="firstName" type="firstName" component={customInputForm}/>
+                  <Field name="firstNameContact" type="firstName" component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
                   <Label for="contact1">Last Name</Label>
-                  <Field name="lastName" type="lastName" component={customInputForm}/>
+                  <Field name="lastNameContact" type="lastName" component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
                   <Label for="contact1">Phone Number</Label>
