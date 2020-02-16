@@ -27,7 +27,11 @@ class DashboardPage extends React.Component {
         <div className="col">
           <h1 className="mb-3">Your Medical Records</h1>
           {data.map(d => (
+<<<<<<< HEAD
             <div className="bg-white shadow w-100 br p-3">
+=======
+            <div className="mb-5 bg-white shadow w-100 br p-3">
+>>>>>>> cf5efc9eee7a5808938869f6839ad7eb9ba1e615
               <h5>Document <b className="color-blue">{d.id}</b></h5>
               <div className="mt-1">
                 <div>
