@@ -87,14 +87,17 @@ router.post('/signup', upload.single('pic'), (req, res) => {
             userref.get().then(doc => {
                 if (!doc.exists) {
                     var data = {
-                        name: req.body.firstName+req.body.lastName,
+                        name: req.body.firstName+ ' ' + req.body.lastName,
                         email: req.body.email,
                         salt: salt,
                         hash: hash,
                         picUrl: url, 
                         personGroupId: "treehacks7",
                         personId: personId,
-                        role: "user"
+                        role: "user",
+                        contactName: req.body.firstNameContact + ' ' + req.body.lastNameContact,
+                        contactNumber: req.body.phoneNumber,
+                        contactEmail: req.body.contactEmail
                     }
                     db.collection('users').doc(personId).set(data).then(ref => {
                         console.log('Added document with pid: ', personId);
