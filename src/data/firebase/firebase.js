@@ -32,6 +32,7 @@ class Firebase {
 
   getRecordsById = async (personId) => this.firestore.collection('records').where('personId', '==', personId).get()
  
+  getTrials = async () => this.firestore.collection('trial').get()
 }
 
 export default Firebase;
