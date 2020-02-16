@@ -11,7 +11,7 @@ function App() {
         </div>
         <div className="col-md-6 d-flex">
           <div className="my-auto text-center w-100 home-text">
-            aid network.
+            aid network. built for you.
           </div>  
           {/*<ButtonGroup className="my-auto">
             <Button color="info" href="/signup/">sign up</Button>

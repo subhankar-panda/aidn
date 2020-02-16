@@ -28,34 +28,26 @@ const TopNav = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              {!authenticated && <NavLink href="/signup/">sign up</NavLink>}
+              {!authenticated && <NavLink href="/signup/"><Button outline color='secondary'>sign up</Button></NavLink>}
             </NavItem>
             <NavItem>
-              {!authenticated && <NavLink href="/login/">log in</NavLink>}
+              {!authenticated && <NavLink href="/login/"><Button outline color='secondary'>log in</Button></NavLink>}
+            </NavItem>
+            <NavItem>
+              <NavLink href="/assist/"><Button outline color='secondary'>assistant</Button></NavLink>
+            </NavItem>
+            <NavItem>
+              {authenticated && <NavLink href="/medical-history/"><Button outline color='secondary'>medical history</Button></NavLink>}
+            </NavItem>
+            <NavItem>
+              {authenticated && <NavLink href="/doctors/"><Button outline color='secondary'>doctors</Button></NavLink>}
             </NavItem>
             <NavItem>
               <NavLink href="/emergency"><Button color='danger'>Medical Emergency</Button></NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Options
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Option 1
-                </DropdownItem>
-                <DropdownItem>
-                  Option 2
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Reset
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
           </Nav>
-          {props.user && <NavbarText>Hi, {props.user.name}</NavbarText>}
-          <NavbarText><img className="rounded-circle" style={{width: '3rem'}} src={props.user && props.user.picUrl}></img></NavbarText>
+          {props.user && <NavbarText className='pr-2'>hi, {props.user.name} </NavbarText>}
+          <NavbarText><img className="rounded-circle img-responsive" style={{width: '3rem'}} src={props.user && props.user.picUrl}></img></NavbarText>
         </Collapse>
       </Navbar>
     </div>
