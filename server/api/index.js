@@ -1,10 +1,20 @@
 var express = require('express');
 var router = express.Router();
 const request = require('request');
-const fs = require('fs');
 let admin = require("firebase-admin");
 let crypto = require('crypto');
-let serviceAccount = require("../../.credentials.json");
+let serviceAccount = {
+    "type": "service_account",
+    "project_id": "ivory-strategy-268307",
+    "private_key_id": process.env.GOOG_PRIVATE_KEY_ID,
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCnfeXIcfT/dAAN\nAg2TUY6CVYtN8nIOL2wVoy/eskS9wYrySA+zQHoLDzXf0SeFWWMIvVUcMT9ym88n\nxJk/x6NEw5UVXHiQPXjJxxrDQ1wb05JoPIKYpuinGBlM9VeGC+LonLenpXn/zf3m\ntqIVvD8fhivzCTSgXfWn9IKMyXIklWCCTlxMUv6afqdfPZMbEWbdJOe4WHpHbvN5\n1yfXDjNPXIPwIaQCX0huJF38vLfrigH5bD2sPQW8PaLzIfSoPj2TXfD/IX6T6SA2\n6iFtE8IKU9Etz3N6vCBFa90Qy0f3LrpHjH8Iwk7aVxVB3tjyjLfJOtTjkM9G5Plo\ntpffUwm3AgMBAAECggEAUO6dP0+NTniLY723uJVCksjqILaDlUYl6IirY2TpoXVp\ngev/JiMENd7aLfW/LojEOV9fRlmnqmYOYc12LaL2Sg5lteYyXaROftWmIW8ljU6c\n4qBGjKOuLLuQ0iaE7cFFmhfMCIaFnm03gCmExZLqP33SM8QheVIdl1QnVwcqD/GS\nprdwnenMird3kAvXOSjVcbNmox2ogBsaFCEThVJXkB/NCkzP+N+HYaTPJiS8mTgb\nYzel+vHqAXxerP8NzKaEYjVaQP6XV1IIMG4bg1b/Uzd8JwdEdkcBAoaz/CY47Hwo\nFqkBOc01xnffvPcQgSHmufy8mGMp9js1f2UdTjxGsQKBgQDpCYcIqgutEHbcpFf7\nIzj4KTm8vvPma1W5QEZkCyopTcttTMz6MyJyUD2nGRVD400oSQfeIoO2lLrULGtL\nRexgAmLHvIj2TSghfCi0wB0wAp2Ct7ejI1CThDNbhjO1s8fdrog62E2C6hHa2ZIm\n4jKK5E9Sv+VvVkhCdtXRUXdpJwKBgQC3/vTBjZ7gbHiiWbMedzVXSpCvW4vggpVn\nfDysguW94BaFhXcwGGjx1d8LW/5RYWcMRqxeIGcAm2NTy6KDkctncfcFwJ5Xjgoj\nk6Fy31i6omKCQmicA26DqwlZEe276hbSSsdrRd8LQ1tGjQbbr9FlMCNHeQa5pAoG\nS+iac/4U8QKBgQClPRI4vIqG7rO5g/a2pqUQofrEsQm0istADilbauc8XmMuX1TA\n3F1CfU8aGxkPCC9/rzka85I9dnx7UfvKZgxTj52HT1I2g0M/axBaChcoIdKaC7b0\nwGe0EftwnFoyLwY7VDRYtWNQvrRmX/vYAnAgN/9fB56iMaYPKsA2KfPn5QKBgQCA\nv+w+4D2TZvPHDyNypxHxQiEaQ+IOOPIY1uuR/4qJohvAVNNBGWOeDf0kcrvz8Edu\nZKnKt7u7xf/sK+tNS6DcgvfK0605MRBRMsXfnv/0oRpzccrHmPMlOXKyHASR4M0V\nW/RNUTgxJnHhXV+2LEJHHzcglUSqdGn7W/So14+s0QKBgBlo59RFdjuwR+/MLq2X\nYIyqZc8TAOhYjaAvMt0st82+CpjbPT7rqTy7eYFE+g/kvg6Kxnlk6dEnWii5SFVY\nswcpFP/nVNUyMsto+Cf87iY5ZDN0dhU993ggR+GNhMU/TUaHvxB+EXyr9kctv8Or\nMTEcG1sMAscZIS3fV74nAwES\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-a93xp@ivory-strategy-268307.iam.gserviceaccount.com",
+    "client_id": "110187577300795259178",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-a93xp%40ivory-strategy-268307.iam.gserviceaccount.com"
+  }
 const multer = require("multer");
 const path = require('path');
 
@@ -17,15 +27,13 @@ var storage = multer.diskStorage({
   }
 })
 const upload = multer({storage})
-let rawdata = fs.readFileSync('.env.json');
-let env_vars = JSON.parse(rawdata);
-
-const subscriptionKey = env_vars.apikey_face;
-const uriBase = env_vars.endpoint_face;
+const subscriptionKey = process.env.API_KEY_FACE;
+const uriBase = process.env.ENDPOINT_FACE;
+console.log(subscriptionKey, uriBase)
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: env_vars.database_url
+  databaseURL: process.env.DATABASE_URL
 });
 
 let db = admin.firestore();

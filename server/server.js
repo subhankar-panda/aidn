@@ -1,7 +1,8 @@
 const express = require('express');
+var path = require('path');
+require('dotenv').config({path: path.resolve(__dirname, '../.env')})
 const ApiHandler = require('./api');
 var bodyParser = require('body-parser')
-var path = require('path');
 
 function startInstance() {
   const app = express();
