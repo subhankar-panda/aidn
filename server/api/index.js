@@ -119,8 +119,6 @@ router.post('/signup', upload.single('pic'), (req, res) => {
                                 console.log('Error: ', error);
                                 return;
                             }
-                            console.log('REEEEEEEEEEEEEE')
-                            console.log(body)
                             let opt = {
                                 uri: uriBase+"face/v1.0/persongroups/treehacks7/train",
                                 headers: {
@@ -147,8 +145,7 @@ router.post('/login', (req, res) => {
 
 });
 
-router.post('/lookup', upload.single('pic'), (req, res) => {
-    console.log(req.body, req.file  )
+router.get('/lookup', upload.single('pic'), (req, res) => {
     let ref = admin.storage().bucket('gs://ivory-strategy-268307.appspot.com');
     ref.upload(req.file.path).then((ree) => {
         url = "https://storage.googleapis.com/"+ree[0].metadata.bucket+"/"+ree[0].metadata.name
