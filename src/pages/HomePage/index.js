@@ -12,12 +12,7 @@ function App() {
         <div className="col-md-6 d-flex">
           <div className="my-auto text-center w-100 home-text">
             aid network. built for you.
-          </div>  
-          {/*<ButtonGroup className="my-auto">
-            <Button color="info" href="/signup/">sign up</Button>
-            <Button color="info" href="/login/">log in</Button>
-            <Button color="danger">call for help</Button>
-  </ButtonGroup>*/}       
+          </div>       
         </div>
       </div>
     </div>
