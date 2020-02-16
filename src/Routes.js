@@ -9,6 +9,7 @@ import SignUpPage from './pages/SignUpPage';
 import LoginPage from './pages/LoginPage';
 import AssistantPage from './pages/AssistantPage';
 import EmergencyPage from './pages/EmergencyPage';
+import DashboardPage from './pages/DashboardPage';
 
 class Routes extends React.Component {
 
@@ -42,7 +43,7 @@ class Routes extends React.Component {
     return (
       <Switch>
         <Route path="/" exact={true}>
-          {this.withLayout(HomePage)}
+          <HomePage user={this.state.user} authenticated={this.state.authenticated}/>
         </Route>
         <Route path="/doctors" exact={true}>
           {this.withLayout(DoctorsPage)}
@@ -61,6 +62,9 @@ class Routes extends React.Component {
         </Route>
         <Route path="/emergency" exact={true}>
           {this.withLayout(EmergencyPage)}
+        </Route>
+        <Route path="/dashboard" exact={true}>
+          {this.withLayout(DashboardPage)}
         </Route>
       </Switch>
 
