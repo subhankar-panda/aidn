@@ -5,6 +5,7 @@ import FileUpload from './FileUpload.js';
 import {signUp} from '../../data/index';
 import {withFirebase} from '../../data/firebase';
 import * as Yup from 'yup';
+import Cam from './Cam.js';
 
 const customInputForm = ({field, form: {touched, errors}, ...props}) => (
   <div>
@@ -39,6 +40,10 @@ class SignUpPage extends React.Component {
         .email('Invalid email address'),
       phoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
     })
+
+    this.state = {
+      cameraCollapsed: true
+    }
   }
 
   signupUser = async (values) => {
@@ -46,6 +51,7 @@ class SignUpPage extends React.Component {
     const res = await signUp(values);
     localStorage.setItem('person', res.body.personId)
   }
+
   render() {
     return (
       <Formik
@@ -58,52 +64,57 @@ class SignUpPage extends React.Component {
             // <div className="d-flex">
             // <img src="../../aidn2.png" className="img-thumbnail w-25 text-center m-auto"></img> 
             <form className="w-50 mx-auto mt-5" onSubmit={handleSubmit}>
-                <h2>your information:</h2>
+                <h2>Your Information:</h2>
                 <FormGroup>
-                    <Label for="firstName">first name</Label>
+                    <Label for="firstName">First Name</Label>
                     <Field name="firstName" type={'text'} component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                    <Label for="lastName">last name</Label>
+                    <Label for="lastName">Last Name</Label>
                     <Field name="lastName" type={'text'} component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                    <Label for="email">email</Label>
+                    <Label for="email">Email</Label>
                     <Field name="email" type={'email'} component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                    <Label for="password">password</Label>
+                    <Label for="password">Password</Label>
                     <Field name="password" type={'password'} component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="profilePhoto">upload profile photo</Label>
+                  <Label for="profilePhoto">Upload Profile Photo</Label>
                   <Field
                     style={{margin: 'auto'}}
                     name="image"
                     component={FileUpload}
                   />
+                  <h3 className="text-center">
+                    or
+                    <div className="mt-3">{this.state.cameraCollapsed && <Button color='primary' onClick={() => this.setState({cameraCollapsed: false})}>Take a Photo</Button>}</div>
+                  </h3>
+                  {!this.state.cameraCollapsed &&  <Field name="image" component={Cam} />}
                 </FormGroup>
-                <h2>emergency contact information:</h2>
-                <h8>this person will be contacted in the event of an emergency</h8>
+                <h2>Emergency Contact Information:</h2>
+                <h8>This person will be contacted in the event of an emergency</h8>
                 <FormGroup>
-                  <Label for="contact1">first name</Label>
+                  <Label for="contact1">First Name</Label>
                   <Field name="firstName" type="firstName" component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="contact1">last name</Label>
+                  <Label for="contact1">Last Name</Label>
                   <Field name="lastName" type="lastName" component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="contact1">phone number</Label>
+                  <Label for="contact1">Phone Number</Label>
                   <Field name="phoneNumber" type="phoneNumber" component={customInputForm}/>
                 </FormGroup>
                 <FormGroup>
-                  <Label for="contact1">email</Label>
+                  <Label for="contact1">Email</Label>
                   <Field name="contactEmail" type="contactEmail" component={customInputForm}/>
                 </FormGroup>
-                <Button color="info" type="submit">sign up</Button>
+                <Button color="info" type="submit">Sign Up</Button>
 
-                <Button color="link" href="/login/">log in instead!</Button>
+                <Button color="link" href="/login/">Log-In Instead!</Button>
             </form>)}
           {/* </div>)} */}
         </Formik>
